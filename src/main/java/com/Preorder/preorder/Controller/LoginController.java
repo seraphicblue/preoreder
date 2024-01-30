@@ -50,6 +50,7 @@ public class LoginController {
         System.out.println(userEmailFromToken+"userEmailFromToken");
 
         return "mainpage";
+
     }
 
 
