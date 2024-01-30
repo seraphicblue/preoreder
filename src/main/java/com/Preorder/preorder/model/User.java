@@ -1,4 +1,4 @@
-package com.Preorder.preorder.model;
+package com.preorder.preorder.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

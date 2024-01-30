@@ -1,8 +1,8 @@
-package com.Preorder.preorder.Controller;
+package com.preorder.preorder.Controller;
 
-import com.Preorder.preorder.model.User;
+import com.preorder.preorder.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
 
-    @Autowired
+    /*@Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+*/
     @GetMapping({ "", "/" })
     public @ResponseBody String index() {
         return "인덱스 페이지입니다.";
@@ -41,7 +41,10 @@ public class IndexController {
         return "login";
     }
 
-
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
     @PostMapping("/joinProc")
     public String joinProc(User user) {
 

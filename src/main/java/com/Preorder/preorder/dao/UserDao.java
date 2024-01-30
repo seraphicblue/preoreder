@@ -1,6 +1,6 @@
-package com.Preorder.preorder.dao;
+package com.preorder.preorder.dao;
 
-import com.Preorder.preorder.model.User;
+import com.preorder.preorder.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

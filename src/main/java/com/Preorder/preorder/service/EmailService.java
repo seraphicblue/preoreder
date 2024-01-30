@@ -1,4 +1,4 @@
-package com.Preorder.preorder.service;
+package com.preorder.preorder.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,14 +15,13 @@ public class EmailService {
     @Value("${email.verification.url}")
     private String verificationUrlBase;
 
-    public String sendVerificationEmail(String username, String email, String token) {
+    public void sendVerificationEmail(String username, String email, String token) {
         String verificationUrl = verificationUrlBase + "?token=" + token;
         String subject = "이메일 인증";
         String text = "이메일 인증을 위해 다음 링크를 클릭해주세요: " + verificationUrl;
 
         sendEmail(email, subject, text);
 
-        return token; // 데이터베이스에 저장할 수 있도록 토큰 반환
     }
 
     public void sendEmail(String recipient, String subject, String text) {

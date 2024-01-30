@@ -1,9 +1,10 @@
-package com.Preorder.preorder.service;
+package com.preorder.preorder.service;
 
-import com.Preorder.preorder.dao.UserDao;
-import com.Preorder.preorder.model.User;
+
+import com.preorder.preorder.dao.UserDao;
+import com.preorder.preorder.model.User;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -11,17 +12,17 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     public User createUser(String username, String email, String password, String token) {
         // Encrypt the password
-        String encryptedPassword = passwordEncoder.encode(password);
+       // String encryptedPassword = passwordEncoder.encode(password);
 
         // Create the user
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(encryptedPassword);
+        user.setPassword(password);
         user.setToken(token);
         user.setVerify(false); // Initially, user is not verified
 
@@ -43,4 +44,5 @@ public class UserService {
 
         return user;
     }
+
 }

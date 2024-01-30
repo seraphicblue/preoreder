@@ -1,8 +1,8 @@
-package com.Preorder.preorder.Controller;
+package com.preorder.preorder.Controller;
 
-import com.Preorder.preorder.model.User;
-import com.Preorder.preorder.service.EmailService;
-import com.Preorder.preorder.service.UserService;
+import com.preorder.preorder.model.User;
+import com.preorder.preorder.service.EmailService;
+import com.preorder.preorder.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +21,13 @@ public class EmailController {
     private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
-    @PostMapping("/signup")
+    @PostMapping("/signin")//회원가입 입력시
     public ResponseEntity<?> signup(String username, String email, String password) {
         try {
             String token = UUID.randomUUID().toString();
             User user = userService.createUser(username, email, password, token);
             emailService.sendVerificationEmail(username, email, token);
+            System.out.print("SING");
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             logger.error("Error during signup", e);
@@ -34,7 +35,7 @@ public class EmailController {
         }
     }
 
-    @GetMapping("/verify")
+    @GetMapping("/verify")//이메일 인증
     public ResponseEntity<?> verifyEmail(@RequestParam String token) {
         try {
             User user = userService.verifyUser(token);
