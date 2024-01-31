@@ -2,7 +2,6 @@ package com.preorder.preorder.service;
 
 import com.preorder.preorder.Config.JwtToken;
 import com.preorder.preorder.Config.JwtTokenProvider;
-import com.preorder.preorder.dao.UserDao;
 import com.preorder.preorder.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

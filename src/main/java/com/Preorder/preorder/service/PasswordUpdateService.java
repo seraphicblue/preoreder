@@ -2,7 +2,6 @@ package com.preorder.preorder.service;
 
 import java.util.List;
 
-import com.preorder.preorder.dao.UserDao;
 import com.preorder.preorder.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
