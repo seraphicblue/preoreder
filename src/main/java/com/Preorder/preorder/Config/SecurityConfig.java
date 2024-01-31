@@ -1,3 +1,4 @@
+
 package com.preorder.preorder.Config;
 
 
@@ -40,7 +41,8 @@ public class SecurityConfig { //WebSecurityConfigurerAdapter was deprecated
             BCryptPasswordEncoder(); }
 
 
-    @Bean
+
+ @Bean
     public HttpFirewall allowUrlEncodedDoubleSlashHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedDoubleSlash(true);
@@ -48,14 +50,18 @@ public class SecurityConfig { //WebSecurityConfigurerAdapter was deprecated
     }
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/login/**").permitAll()
-                                .anyRequest().authenticated())
+                                .requestMatchers(
+                                        "/login",      // 추가: /login 엔드포인트를 permitAll로 설정
+                                        "/loginup"     // 다른 permitAll 엔드포인트도 여기에 추가할 수 있습니다.
+                                ).permitAll()
+                                .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
@@ -65,4 +71,8 @@ public class SecurityConfig { //WebSecurityConfigurerAdapter was deprecated
 
 
 
+
+
+
 }
+
