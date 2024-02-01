@@ -3,6 +3,7 @@ package com.preorder.preorder.service;
 import com.preorder.preorder.Config.JwtToken;
 import com.preorder.preorder.Config.JwtTokenProvider;
 import com.preorder.preorder.model.User;
+import com.preorder.preorder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,7 @@ public class LoginUserService {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -43,7 +44,7 @@ public class LoginUserService {
         User findUser;
         try {
             // 사용자 정보 가져오기
-            findUser = userDao.findByUsername(username);
+            findUser = userRepository.findByUsername(username);
 
         } catch (UsernameNotFoundException e) {
             // 사용자가 존재하지 않을 경우 처리

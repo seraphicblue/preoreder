@@ -1,41 +1,44 @@
 package com.preorder.preorder.Controller;
 
-import com.preorder.preorder.model.User;
-import com.preorder.preorder.service.UserService;
+import com.preorder.preorder.service.FollowService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
+    private final FollowService followService;
 
+    public UserController(FollowService followService) {
+        this.followService = followService;
+    }
 
+    // 팔로우하는 기능
     @PostMapping("/{followerId}/follow/{followingId}")
     public ResponseEntity<?> followUser(@PathVariable Long followerId, @PathVariable Long followingId) {
-        userService.followUser(followerId, followingId);
-        return ResponseEntity.ok().build();
+        return followService.followUser(followingId, followerId);
     }
 
+    // 언팔로우 기능
     @PostMapping("/{followerId}/unfollow/{followingId}")
     public ResponseEntity<?> unfollowUser(@PathVariable Long followerId, @PathVariable Long followingId) {
-        userService.unfollowUser(followerId, followingId);
-        return ResponseEntity.ok().build();
+        return followService.unfollowUser(followingId, followerId);
     }
 
+    // 사용자의 팔로워 조회
     @GetMapping("/{userId}/followers")
-    public ResponseEntity<List<User>> getFollowers(@PathVariable Long userId) {
-        List<User> followers = userService.getFollowers(userId);
+    public ResponseEntity<List<Object>> getFollowers(@PathVariable Long userId) {
+        List<Object> followers = followService.getFollowers(userId);
         return ResponseEntity.ok(followers);
     }
 
+    // 사용자의 팔로잉 조회
     @GetMapping("/{userId}/following")
-    public ResponseEntity<List<User>> getFollowing(@PathVariable Long userId) {
-        List<User> following = userService.getFollowing(userId);
+    public ResponseEntity<List<Object>> getFollowing(@PathVariable Long userId) {
+        List<Object> following = followService.getFollowing(userId);
         return ResponseEntity.ok(following);
     }
 }
