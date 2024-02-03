@@ -4,11 +4,14 @@ import com.preorder.preorder.Config.JwtToken;
 import com.preorder.preorder.Config.JwtTokenProvider;
 import com.preorder.preorder.model.User;
 import com.preorder.preorder.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,35 +20,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class LoginUserService {
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    @Autowired
     private final JwtTokenProvider jwtTokenProvider;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private String username;
+    private String userid;
 
-    public LoginUserService(AuthenticationManagerBuilder authenticationManagerBuilder, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
-    public JwtToken login(String username, String password) {
+    public JwtToken login(String email, String password) {
         // Authentication 객체 생성
         log.info("jwtlogin");
         UserDetails userDetails = null;
+        this.username = email;
+        // User finduser = userRepository.findByUserid(userid);
 
-        User findUser;
         try {
             // 사용자 정보 가져오기
-            findUser = userRepository.findByUsername(username);
-
+            userDetails = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
             // 사용자가 존재하지 않을 경우 처리
             log.info("User not found: " + username);
@@ -55,11 +60,9 @@ public class LoginUserService {
             log.info("Error loading user details: " + e.getMessage());
             throw new RuntimeException("Error occurred while fetching user details", e);
         }
-
-        // 이후 로직
+        // 비밀번호 검증 로직
         try {
-            // 사용자 입력 비밀번호를 해싱하여 데이터베이스에 저장된 해싱된 비밀번호와 비교
-            if (passwordEncoder.matches(password, findUser.getPassword())) {
+            if (passwordEncoder.matches(password, userDetails.getPassword())) {
                 // 비밀번호가 일치하는 경우
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
                 log.info("Authentication successful: {}", authentication);
@@ -69,7 +72,7 @@ public class LoginUserService {
             } else {
                 // 비밀번호가 일치하지 않는 경우
                 log.error("Authentication failed for user: {}", username);
-                throw new BadCredentialsException("Authentication failed");
+                throw new BadCredentialsException("Invalid password");
             }
         } catch (Exception e) {
             log.error("Authentication failed for user: {}", username, e);
@@ -82,4 +85,5 @@ public class LoginUserService {
         System.out.println(jwtTokenProvider.getUsernameFromToken(token.getAccessToken()));
         return jwtTokenProvider.getUsernameFromToken(token.getAccessToken());
     }
+
 }

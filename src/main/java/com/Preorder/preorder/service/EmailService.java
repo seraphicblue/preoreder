@@ -6,8 +6,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor // 생성자 주입 사용하기
+
 @Service
+@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender javaMailSender;

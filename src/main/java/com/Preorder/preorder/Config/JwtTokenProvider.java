@@ -4,10 +4,12 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
-
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class JwtTokenProvider {
-
     private final Key key;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -47,7 +48,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60  * 60 * 24))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -85,7 +86,7 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+        } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
@@ -96,6 +97,7 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
 
     private Claims parseClaims(String accessToken) {
         try {
@@ -113,5 +115,14 @@ public class JwtTokenProvider {
 
         return claims.getSubject(); // JWT 토큰의 subject에 사용자 정보(예: 이메일)가 저장되어있음.
     }
+    public String getIdFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
 }
 

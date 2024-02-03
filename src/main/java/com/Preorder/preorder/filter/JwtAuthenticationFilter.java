@@ -1,9 +1,12 @@
 package com.preorder.preorder.filter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 
 import com.preorder.preorder.Config.JwtTokenProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.StringUtils;
 
 import org.springframework.security.core.Authentication;
@@ -48,6 +51,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        var authentication = new UsernamePasswordAuthenticationToken(
+                "user", // 주체(principal)
+                null, // 자격증명(credentials)
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))); // 권한
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(servletRequest, servletResponse); // use original parameters here
     }

@@ -20,9 +20,10 @@ public class UserService {
     //private final PasswordEncoder passwordEncoder;
 
     private FollowRepository followRepository;
+
     public User createUser(String username, String email, String password, String token) {
         // Encrypt the password
-       // String encryptedPassword = passwordEncoder.encode(password);
+        // String encryptedPassword = passwordEncoder.encode(password);
 
         // Create the user
         User user = new User();
@@ -50,6 +51,5 @@ public class UserService {
 
         return user;
     }
-
 
 }

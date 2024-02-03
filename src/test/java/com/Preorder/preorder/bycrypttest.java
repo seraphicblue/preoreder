@@ -18,7 +18,7 @@ public class bycrypttest{
          * if (isPasswordMatch) { System.out.println("비밀번호 일치!"); } else {
          * System.out.println("비밀번호 불일치!"); }
          */
-        String encryptedPassword = encoder.encode("12");
+        String encryptedPassword = encoder.encode("1234");
         System.out.println(encryptedPassword);
     }
 }
