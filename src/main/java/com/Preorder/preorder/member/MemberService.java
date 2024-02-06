@@ -11,6 +11,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public void signup(String username, String password) {
-        memberRepository.save(new MemberEntity(username, passwordEncoder.encode(password)));
+        memberRepository.save(new Member(username, passwordEncoder.encode(password)));
     }
 }

@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "member_entity") // 데이터베이스 테이블 이름을 member_entity로 지정
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberEntity {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +20,7 @@ public class MemberEntity {
     @Column(nullable = false)
     private String password;
 
-    public MemberEntity(String username, String password) {
+    public Member(String username, String password) {
         this.username = username;
         this.password = password;
     }

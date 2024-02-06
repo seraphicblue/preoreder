@@ -1,5 +1,7 @@
 package com.preorder.preorder.follow;
 
+import com.preorder.preorder.post.entity.Post;
+import com.preorder.preorder.post.PostService;
 import com.preorder.preorder.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,11 @@ import java.util.List;
 public class FollowController {
 
     private final FollowService followService;
+    private final PostService postService;
 
-    public FollowController(final FollowService followService) {
+    public FollowController(final FollowService followService, final PostService postService) {
         this.followService = followService;
+        this.postService = postService;
     }
 
     //팔로우 하기
@@ -33,17 +37,24 @@ public class FollowController {
     }
 
     // 특정 사용자가 팔로우하는 사용자 목록을 조회하는 엔드포인트
-    @GetMapping("/following/{userId}")
+    @GetMapping("/{userId}/following/")
     public ResponseEntity<List<Follow>> getFollowing(@PathVariable Long userId) {
         List<Follow> following = followService.findFollowing(userId);
         return ResponseEntity.ok(following);
     }
 
     // 특정 사용자를 팔로우하는 사용자 목록을 조회하는 엔드포인트
-    @GetMapping("/followers/{userId}")
+    @GetMapping("/{userId}/followers")
     public ResponseEntity<List<Follow>> getFollowers(@PathVariable Long userId) {
         List<Follow> followers = followService.findFollowers(userId);
         return ResponseEntity.ok(followers);
+    }
+
+    //팔로잉 사용자들의 포스트 가져오는 엔드 포인트
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<Post>> getPostsByFollowing(@PathVariable Long userId) {
+        List<Post> posts = postService.getPostsByFollowingUsers(userId);
+        return ResponseEntity.ok(posts);
     }
 
 }

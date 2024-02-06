@@ -8,4 +8,6 @@ public interface FollowService {
     List<Follow> findFollowing(Long userId);
 
     List<Follow> findFollowers(Long userId);
+
+    List<Long> getFollowingUserIds(Long userId);
 }

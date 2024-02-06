@@ -1,7 +1,8 @@
 package com.preorder.preorder.security;
 
 
-import com.preorder.preorder.member.MemberEntity;
+import com.preorder.preorder.member.Member;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,13 +10,13 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final MemberEntity member;
+    private final Member member;
 
-    public UserDetailsImpl(MemberEntity member) {
+    public UserDetailsImpl(Member member) {
         this.member = member;
     }
 
-    public MemberEntity getMember() {
+    public Member getMember() {
         return member;
     }
 

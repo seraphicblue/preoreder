@@ -1,7 +1,8 @@
 package com.preorder.preorder.security;
 
 
-import com.preorder.preorder.member.MemberEntity;
+import com.preorder.preorder.member.Member;
+
 import com.preorder.preorder.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MemberEntity user = memberRepository.findByUsername(username)
+        Member user = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found " + username));
 
         return new UserDetailsImpl(user);

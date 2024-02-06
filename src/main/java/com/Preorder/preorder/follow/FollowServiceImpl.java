@@ -1,10 +1,12 @@
 package com.preorder.preorder.follow;
 
-import com.preorder.preorder.member.MemberEntity;
+import com.preorder.preorder.member.Member;
 import com.preorder.preorder.member.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FollowServiceImpl implements FollowService {
@@ -12,6 +14,7 @@ public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
 
+    @Autowired
     public FollowServiceImpl(FollowRepository followRepository, MemberRepository memberRepository) {
         this.followRepository = followRepository;
         this.memberRepository = memberRepository;
@@ -19,9 +22,9 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public void follow(Long followerId, Long followingId) {
-        MemberEntity follower = memberRepository.findById(followerId)
+        Member follower = memberRepository.findById(followerId)
                 .orElseThrow(() -> new RuntimeException("팔로워가 없습니다."));
-        MemberEntity following = memberRepository.findById(followingId)
+        Member following = memberRepository.findById(followingId)
                 .orElseThrow(() -> new RuntimeException("팔로잉이 없습니다."));
 
         Follow follow = Follow.builder()
@@ -32,14 +35,22 @@ public class FollowServiceImpl implements FollowService {
         followRepository.save(follow);
     }
 
-    // 특정 사용자가 팔로우하는 사용자 목록을 조회
+    @Override
     public List<Follow> findFollowing(Long userId) {
-        return FollowRepository.findFollowing(userId);
+
+        return followRepository.findFollowing(userId);
     }
 
-    // 특정 사용자를 팔로우하는 사용자 목록을 조회
+    @Override
     public List<Follow> findFollowers(Long userId) {
-        return FollowRepository.findFollower(userId);
+
+        return followRepository.findFollower(userId);
+    }
+
+    @Override
+    public List<Long> getFollowingUserIds(Long userId) {
+        List<Follow> follows = followRepository.findFollowing(userId);
+        return follows.stream().map(follow -> follow.getFollowing().getId()).collect(Collectors.toList());
     }
 
 
