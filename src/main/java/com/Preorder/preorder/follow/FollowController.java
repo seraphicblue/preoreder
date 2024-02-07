@@ -1,6 +1,5 @@
 package com.preorder.preorder.follow;
 
-import com.preorder.preorder.post.entity.Post;
 import com.preorder.preorder.post.PostService;
 import com.preorder.preorder.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
@@ -50,11 +49,11 @@ public class FollowController {
         return ResponseEntity.ok(followers);
     }
 
-    //팔로잉 사용자들의 포스트 가져오는 엔드 포인트
+    /*//팔로잉 사용자들의 포스트 가져오는 엔드 포인트
     @GetMapping("/{userId}/posts")
-    public ResponseEntity<List<Post>> getPostsByFollowing(@PathVariable Long userId) {
-        List<Post> posts = postService.getPostsByFollowingUsers(userId);
+    public ResponseEntity<List<PostResponse>> getPostsByFollowing(@PathVariable Long userId) {
+        List<PostResponse> posts = postService.getPostsByFollowingUsers(userId);
         return ResponseEntity.ok(posts);
-    }
+    }*/
 
 }

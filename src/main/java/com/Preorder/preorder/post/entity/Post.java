@@ -17,6 +17,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(name = "user_id")
     private Long userId; // 포스트 작성자 ID
 
@@ -32,4 +33,6 @@ public class Post {
         this.userId = userId;
         this.content = content;
     }
+
+
 }

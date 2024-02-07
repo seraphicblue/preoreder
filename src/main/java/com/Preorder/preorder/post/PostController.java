@@ -2,6 +2,7 @@ package com.preorder.preorder.post;
 
 import com.preorder.preorder.post.entity.Comment;
 import com.preorder.preorder.post.entity.Post;
+import com.preorder.preorder.post.response.FollowingeveryResponse;
 import com.preorder.preorder.post.service.CommentService;
 import com.preorder.preorder.post.service.PostLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,15 @@ public class PostController {
         return ResponseEntity.ok(newPost);
     }
 
-    @GetMapping
+   /* @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
-    }
+    }*/
 
     @GetMapping("/following/{userId}")
-    public ResponseEntity<List<Post>> getPostsByFollowing(@PathVariable Long userId) {
-        List<Post> posts = postService.getPostsByFollowingUsers(userId);
+    public ResponseEntity<List<FollowingeveryResponse>> getPostsByFollowing(@PathVariable Long userId) {
+        List<FollowingeveryResponse> posts = postService.getActivitiesByFollowingUsers(userId);
         return ResponseEntity.ok(posts);
     }
 
@@ -54,4 +55,5 @@ public class PostController {
         likeService.likePost(postId);
         return ResponseEntity.ok().build();
     }
+
 }

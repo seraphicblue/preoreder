@@ -2,6 +2,7 @@ package com.preorder.preorder.post.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 @Entity
@@ -9,6 +10,10 @@ public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JoinColumn(name = "userid")
+    @Getter
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -22,6 +27,11 @@ public class PostLike {
     @Builder
     public PostLike(Post post) {
         this.post = post;
+    }
+
+
+    public Post getPost() {
+        return post;
     }
 
 
